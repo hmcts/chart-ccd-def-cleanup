@@ -26,7 +26,7 @@ spec:
           image: postgres:latest
           command: [ "/bin/sh", "-c" ]
           args:
-            - PGPASSWORD={{ .Values.db.def.pass}} psql -h {{ .Values.db.def.host}} -U {{ .Values.db.def.user}} -d {{ .Values.db.def.name}} -P {{ .Values.db.def.pass}} -a -f /path/to/sql-template/def-store-cleanup.sql
+            - PGPASSWORD={{ .Values.db.def.pass}} psql -h {{ .Values.db.def.host}} -U {{ .Values.db.def.user}} -d {{ .Values.db.def.name}} -a -f /path/to/sql-template/def-store-cleanup.sql
           volumeMounts:
             - name: myjob-config-volume
               mountPath: /config
@@ -41,7 +41,7 @@ spec:
           image: postgres:latest
           command: [ "/bin/sh", "-c" ]
           args:
-            - PGPASSWORD={{ .Values.db.data.pass}} psql -h {{ .Values.db.data.host}} -U {{ .Values.db.data.user}} -d {{ .Values.db.data.name}} -P {{ .Values.db.data.pass}} -a -f /path/to/sql-template/data-store-cleanup.sql
+            - PGPASSWORD={{ .Values.db.data.pass}} psql -h {{ .Values.db.data.host}} -U {{ .Values.db.data.user}} -d {{ .Values.db.data.name}} -a -f /path/to/sql-template/data-store-cleanup.sql
           volumeMounts:
             - name: myjob-config-volume
               mountPath: /config
