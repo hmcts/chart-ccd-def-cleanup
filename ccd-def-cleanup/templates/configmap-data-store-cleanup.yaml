@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-data-store
+data:
+  data-store-cleanup.sql: |
+    DELETE
+    FROM case_event
+    WHERE case_type_id IN (
+        {{- range .Values.case_type_ids }}
+                           '{{ . }}-{{ .Values.change_id }}',
+        {{- end }}
+                           ''
+        );
+    DELETE
+    FROM case_data
+    WHERE case_type_id IN (
+        {{- range .Values.case_type_ids }}
+                           '{{ . }}-{{ .Values.change_id }}',
+        {{- end }}
+                           ''
+        );

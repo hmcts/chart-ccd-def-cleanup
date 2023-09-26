@@ -1,0 +1,62 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+  labels:
+    app.kubernetes.io/name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+  annotations:
+    helm.sh/hook: post-delete
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: "{{ if .Values.debug }}before-hook-creation{{ else }}hook-succeeded{{ end}}"
+spec:
+  {{- if .Values.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+  {{- end }}
+  template:
+    metadata:
+      name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+      labels:
+        app.kubernetes.io/name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+    spec:
+      containers:
+        - name: psql-client-def-store-cleanup
+          image: postgres:latest
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - PGPASSWORD={{ .Values.db.def.pass}} psql -h {{ .Values.db.def.host}} -U {{ .Values.db.def.user}} -d {{ .Values.db.def.name}} -P {{ .Values.db.def.pass}} -a -f /path/to/sql-template/def-store-cleanup.sql
+          volumeMounts:
+            - name: myjob-config-volume
+              mountPath: /config
+          resources:
+            requests:
+              memory: {{ .Values.memoryRequests }}
+              cpu: {{ .Values.cpuRequests }}
+            limits:
+              memory: {{ .Values.memoryLimits }}
+              cpu: {{ .Values.cpuLimits }}
+        - name: psql-client-data-store-cleanup
+          image: postgres:latest
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - PGPASSWORD={{ .Values.db.data.pass}} psql -h {{ .Values.db.data.host}} -U {{ .Values.db.data.user}} -d {{ .Values.db.data.name}} -P {{ .Values.db.data.pass}} -a -f /path/to/sql-template/data-store-cleanup.sql
+          volumeMounts:
+            - name: myjob-config-volume
+              mountPath: /config
+          resources:
+            requests:
+              memory: {{ .Values.memoryRequests }}
+              cpu: {{ .Values.cpuRequests }}
+            limits:
+              memory: {{ .Values.memoryLimits }}
+              cpu: {{ .Values.cpuLimits }}
+      restartPolicy: Never
+      volumes:
+        - name: def-store-config-volume
+          configMap:
+            name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-def-store
+        - name: data-store-config-volume
+          configMap:
+            name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-data-store
