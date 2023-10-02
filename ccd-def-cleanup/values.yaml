@@ -1,24 +1,11 @@
 api:
-  url: "{{ .Values.global.idamApiUrl }}"
+  ccdDefStore: "{{ .Values.global.ccdDefStoreApiUrl }}"
+  ccdDataStore: "{{ .Values.global.ccdDataStoreApiUrl }}"
 image: hmctspublic.azurecr.io/imported/curlimages/curl:7.85.0
-web_public:
-  url: "{{ .Values.global.idamWebUrl }}"
 
 global:
-  idamApiUrl: https://idam-api.aat.platform.hmcts.net
-  idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-
-db:
-  data:
-    host:
-    name:
-    user:
-    pass:
-  def:
-    host:
-    name:
-    user:
-    pass:
+  ccdDefStoreApiUrl: https://idam-api.aat.platform.hmcts.net
+  ccdDataStoreApiUrl: https://idam-web-public.aat.platform.hmcts.net
 
 memoryRequests: "128Mi"
 cpuRequests: "25m"

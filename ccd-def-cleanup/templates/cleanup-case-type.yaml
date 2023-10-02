@@ -22,29 +22,14 @@ spec:
         app.kubernetes.io/name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
     spec:
       containers:
-        - name: psql-client-def-store-cleanup
-          image: postgres:latest
-          command: [ "/bin/sh", "-c" ]
-          args:
-            - PGPASSWORD={{ .Values.db.def.pass}} psql -h {{ .Values.db.def.host}} -U {{ .Values.db.def.user}} -d {{ .Values.db.def.name}} -a -f /path/to/sql-template/def-store-cleanup.sql
+        - name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+          image: {{ .Values.image }}
           volumeMounts:
-            - name: myjob-config-volume
-              mountPath: /config
-          resources:
-            requests:
-              memory: {{ .Values.memoryRequests }}
-              cpu: {{ .Values.cpuRequests }}
-            limits:
-              memory: {{ .Values.memoryLimits }}
-              cpu: {{ .Values.cpuLimits }}
-        - name: psql-client-data-store-cleanup
-          image: postgres:latest
-          command: [ "/bin/sh", "-c" ]
+            - name: ccd-cleanup-config-volume
+              mountPath: /ccd-cleanup-config-volume
+          command: [ "/bin/sh" ]
           args:
-            - PGPASSWORD={{ .Values.db.data.pass}} psql -h {{ .Values.db.data.host}} -U {{ .Values.db.data.user}} -d {{ .Values.db.data.name}} -a -f /path/to/sql-template/data-store-cleanup.sql
-          volumeMounts:
-            - name: myjob-config-volume
-              mountPath: /config
+            - /container.init/ccd-pr-cleanup
           resources:
             requests:
               memory: {{ .Values.memoryRequests }}
@@ -54,9 +39,6 @@ spec:
               cpu: {{ .Values.cpuLimits }}
       restartPolicy: Never
       volumes:
-        - name: def-store-config-volume
+        - name: ccd-cleanup-config-volume
           configMap:
-            name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-def-store
-        - name: data-store-config-volume
-          configMap:
-            name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-data-store
+            name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-bin-ccd-cleanup
