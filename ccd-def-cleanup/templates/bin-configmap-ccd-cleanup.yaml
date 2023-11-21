@@ -15,4 +15,4 @@ metadata:
     helm.sh/hook-delete-policy: "before-hook-creation"
 data:
   ccd-pr-cleanup: |
-{{ include (print .Template.BasePath "/bin/_ccd-def-store-cleanup.tpl") . | indent 4 }}
+{{ include (print .Template.BasePath "/bin/_ccd-cleanup.tpl") . | indent 4 }}

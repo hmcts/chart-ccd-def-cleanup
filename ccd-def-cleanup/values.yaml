@@ -4,8 +4,8 @@ api:
 image: hmctspublic.azurecr.io/imported/curlimages/curl:7.85.0
 
 global:
-  ccdDefStoreApiUrl: https://idam-api.aat.platform.hmcts.net
-  ccdDataStoreApiUrl: https://idam-web-public.aat.platform.hmcts.net
+  ccdDefStoreApiUrl: http://ccd-definition-store-api-aat.service.core-compute-aat.internal
+  ccdDataStoreApiUrl: http://ccd-data-store-api-aat.service.core-compute-aat.internal/
 
 memoryRequests: "128Mi"
 cpuRequests: "25m"
