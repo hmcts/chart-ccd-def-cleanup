@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-CHART := idam-pr
+CHART := ccd-def-cleanup
 RELEASE := chart-${CHART}-release
 NAMESPACE := chart-tests
 TEST := ${RELEASE}-test-service
