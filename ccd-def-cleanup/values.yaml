@@ -1,15 +1,11 @@
 api:
-  ccdDefStore: "{{ .Values.global.ccdDefStoreApiUrl }}"
-  ccdDataStore: "{{ .Values.global.ccdDataStoreApiUrl }}"
+  ccdDefStore: "http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
+  ccdDataStore: "http://ccd-data-store-api-aat.service.core-compute-aat.internal/"
 image: hmctspublic.azurecr.io/imported/curlimages/curl:7.85.0
 
-global:
-  ccdDefStoreApiUrl: http://ccd-definition-store-api-aat.service.core-compute-aat.internal
-  ccdDataStoreApiUrl: http://ccd-data-store-api-aat.service.core-compute-aat.internal/
-
-memoryRequests: "128Mi"
-cpuRequests: "25m"
-memoryLimits: "1024Mi"
-cpuLimits: "2500m"
+memoryRequests: 128Mi
+cpuRequests: 250m
+memoryLimits: 1G
+cpuLimits: 1
 ttlSecondsAfterFinished: 3600 #1hr
 debug: false
