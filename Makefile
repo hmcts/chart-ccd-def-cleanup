@@ -4,8 +4,8 @@ RELEASE := chart-${CHART}-release
 NAMESPACE := chart-tests
 TEST := ${RELEASE}-test-service
 ACR := hmctspublic
-AKS_RESOURCE_GROUP := cnp-aks-rg
-AKS_CLUSTER := cnp-aks-cluster
+AKS_RESOURCE_GROUP := cft-preview-00-rg
+AKS_CLUSTER := cft-preview-00-aks
 
 setup:
 	az configure --defaults acr=${ACR}
