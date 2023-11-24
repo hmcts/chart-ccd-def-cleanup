@@ -11,4 +11,4 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
 data:
   ccd-def-store-pr-test: |
-{{ include (print .Template.BasePath "/bin/_ccd-cleanup.tpl") . | indent 4 }}
+{{ include (print .Template.BasePath "/bin/_ccd-cleanup-test.tpl") . | indent 4 }}
