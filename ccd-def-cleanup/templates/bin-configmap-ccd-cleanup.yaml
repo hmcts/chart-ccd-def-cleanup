@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-bin-ccd-cleanup
+  labels:
+    type: configuration
+    app.kubernetes.io/name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-bin-ccd-cleanup
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+  annotations:
+    helm.sh/hook: pre-delete
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: "before-hook-creation"
+data:
+  ccd-pr-cleanup: |
+{{ include (print .Template.BasePath "/bin/_ccd-cleanup.tpl") . | indent 4 }}

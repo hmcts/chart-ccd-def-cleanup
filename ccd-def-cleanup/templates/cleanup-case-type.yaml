@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+  labels:
+    app.kubernetes.io/name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+  annotations:
+    helm.sh/hook: post-delete
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: "{{ if .Values.debug }}before-hook-creation{{ else }}hook-succeeded{{ end}}"
+spec:
+  {{- if .Values.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+  {{- end }}
+  template:
+    metadata:
+      name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+      labels:
+        app.kubernetes.io/name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+    spec:
+      containers:
+        - name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}
+          image: {{ .Values.image }}
+          volumeMounts:
+            - name: ccd-cleanup-config-volume
+              mountPath: /ccd-cleanup-config-volume
+          command: [ "/bin/sh" ]
+          args:
+            - /container.init/ccd-pr-cleanup
+          resources:
+            requests:
+              memory: {{ .Values.memoryRequests }}
+              cpu: {{ .Values.cpuRequests }}
+            limits:
+              memory: {{ .Values.memoryLimits }}
+              cpu: {{ .Values.cpuLimits }}
+      restartPolicy: Never
+      volumes:
+        - name: ccd-cleanup-config-volume
+          configMap:
+            name: {{ template "hmcts.ccdDefCleanup.releaseName" . }}-bin-ccd-cleanup
