@@ -1,7 +1,7 @@
 apiVersion: v1
 description: A Helm chart to cleanup CCD definition files
 name: ccd-def-cleanup
-version: 0.0.1
+version: 9.0.0
 icon: https://github.com/hmcts/chart-ccd-def-cleanup/raw/master/images/icons-helm-50.png
 keywords:
   - ccd
