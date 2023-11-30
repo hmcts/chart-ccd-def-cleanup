@@ -1,6 +1,6 @@
 api:
-  ccdDefStore: "http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
-  ccdDataStore: "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
+  ccdDefStore: "http://ccd-definition-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+  ccdDataStore: "http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
 image: hmctspublic.azurecr.io/imported/curlimages/curl:7.85.0
 
 memoryRequests: 128Mi
