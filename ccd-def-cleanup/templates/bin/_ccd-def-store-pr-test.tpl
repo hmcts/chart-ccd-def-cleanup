@@ -4,7 +4,7 @@ set -ex
 echo "Removing Case Type IDs for change id {{ .Values.change_id }} and case type ids {- join "," .Values.case_type_ids }}"
 
 defResponseCode=$(curl -s -o /dev/null -w "%{http_code}" -k -I -X DELETE \
-  {{tpl $.Values.api.ccdDefStore $ }}/api/testing-support/cleanup-case-type/{{ .Values.change_id }}/?caseTypeIds={- join "," .Values.case_type_ids }})
+  {{tpl $.Values.api.ccdDefStore $ }}/api/testing-support/cleanup-case-type/{{ .Values.change_id }}/?caseTypeIds={{ join "," .Values.case_type_ids }})
 
 # A 404 from this test is ok - we need to improve it to add a case type first
 if [ "$defResponseCode"  != "404" ]; then
@@ -15,7 +15,7 @@ if [ "$defResponseCode"  != "404" ]; then
 fi;
 
 dataResponseCode=$(curl -s -o /dev/null -w "%{http_code}" -k -I -X DELETE \
-  {{tpl $.Values.api.ccdDataStore $ }}/testing-support/cleanup-case-type/{{ .Values.change_id }}/?caseTypeIds={- join "," .Values.case_type_ids }})
+  {{tpl $.Values.api.ccdDataStore $ }}/testing-support/cleanup-case-type/{{ .Values.change_id }}/?caseTypeIds={{ join "," .Values.case_type_ids }})
 
 if [ "$dataResponseCode"  != "200" ]; then
     echo "================================================================"
