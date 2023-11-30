@@ -30,7 +30,7 @@ spec:
               mountPath: /ccd-cleanup-config-volume
           command: [ "/bin/sh" ]
           args:
-            - /container.init/ccd-pr-cleanup
+            - /ccd-cleanup-config-volume/ccd-pr-cleanup
           resources:
             requests:
               memory: {{ .Values.memoryRequests }}
