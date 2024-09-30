@@ -8,4 +8,4 @@ curl -v -k -X DELETE \
 
 
 curl -v -k -X DELETE \
-  {{tpl $.Values.api.ccdDataStore $ }}/internal/testing-support/cleanup-case-type/{{ .Values.change_id }}/?caseTypeIds={{ join "," .Values.case_type_ids }}
+  {{tpl $.Values.api.ccdDataStore $ }}/testing-support/cleanup-case-type/{{ .Values.change_id }}/?caseTypeIds={{ join "," .Values.case_type_ids }}
