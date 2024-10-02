@@ -9,5 +9,3 @@ memoryLimits: 1G
 cpuLimits: 1
 ttlSecondsAfterFinished: 3600 #1hr
 debug: false
-posthook: post-delete
-prehook: pre-delete
