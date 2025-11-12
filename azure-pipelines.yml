@@ -29,8 +29,7 @@ jobs:
       chartName: ccd-def-cleanup
       chartReleaseName: chart-ccd-def-cleanup-ci-test
       chartNamespace: chart-tests
-      helmInstallTimeout: "500"
-      helmDeleteWait: "10"
+      helmInstallTimeout: "300"
 
 - job: Release
   # Make sure we have a tag to run this job
